@@ -1,4 +1,6 @@
 import matplotlib.pyplot as plt
+import argparse
+from datetime import datetime
 
 plt.style.use("seaborn-v0_8-whitegrid")
 
@@ -437,8 +439,48 @@ def gurobi_convex_full_problem_test(add_trade_cost=True, add_market_cost=True):
             res_dict,
         )
 
+def read_command_line_inputs():
+    parser = argparse.ArgumentParser(description='Test parameters for test_with_w0 function')
 
-if __name__ == "__main__":
+    parser.add_argument('--first_date', type=str, 
+                        help='First date in YYYY-MM-DD format', required=True)
+    parser.add_argument('--second_date', type=str, 
+                        help='Second date in YYYY-MM-DD format', required=True)
+    parser.add_argument('--add_trade_cost', type=bool, default=True, 
+                        help='Boolean to add trade cost')
+    parser.add_argument('--add_market_cost', type=bool, default=True, 
+                        help='Boolean to add market cost')
+    parser.add_argument('--K', type=int, default=160, 
+                        help='Integer value for K')
+    parser.add_argument('--use_initial_weights', type=bool, default=True, 
+                        help='Boolean to use initial weights')
+    parser.add_argument('--time_limit', type=int, default=900, 
+                        help='Time limit for the test')
+    parser.add_argument('--days', type=int, default=10, 
+                        help='Number of days for the test')
+
+    args = parser.parse_args()
+
+    return args
+
+def main():
+    """
+    Example
+     python gurobi_comparison.py --days 1 --first_date 2020-03-13 --second_date 2020-03-16 --time_limit 30
+     """
+    args = read_command_line_inputs()
+    test_with_w0(
+        args.first_date,
+        args.second_date,
+        args.add_trade_cost,
+        args.add_market_cost,
+        args.K,
+        args.use_initial_weights,
+        args.time_limit,
+        args.days
+    )
+
+def old_main():
     # day_data = atp_mosek.get_default_day()
     # cvxpy_gurobi_market_impact_cost_test(day_data, days=1)
     # test_mc()
@@ -470,3 +512,6 @@ if __name__ == "__main__":
     # all_data = atp_mosek.get_default()
     # cvxpy_gurobipy_test(all_data, include_trade_cost=True)
     # mip_that_worked()
+
+if __name__ == "__main__":
+    main()
