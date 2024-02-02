@@ -466,8 +466,8 @@ def read_command_line_inputs():
 def main():
     """
     Example
-     python gurobi_comparison.py --days 1 --first_date 2020-03-13 --second_date 2020-03-16 --time_limit 30
-     """
+    python gurobi_comparison.py --days 1 --first_date 2020-03-13 --second_date 2020-03-16 --time_limit 30
+    """
     args = read_command_line_inputs()
     test_with_w0(
         args.first_date,
